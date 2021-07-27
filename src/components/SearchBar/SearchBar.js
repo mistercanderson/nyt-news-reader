@@ -5,16 +5,7 @@ import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-  searchBar: {
-    width: '20em',
-    '@media (max-width: 480px)': {
-      width: '11em',
-    },
-  },
-});
+import useStyles from '../../util/materialUIStyles';
 
 export default function SearchBar({ stories, paths }) {
   const defaultProps = {
@@ -29,6 +20,7 @@ export default function SearchBar({ stories, paths }) {
     const searchIndex = stories.indexOf(value);
     if (paths[searchIndex]) {
       setPath(paths[searchIndex]);
+      setValue(null);
     }
   };
 
@@ -44,7 +36,7 @@ export default function SearchBar({ stories, paths }) {
         }}
       >
         <IconButton
-          color='primary'
+          color='default'
           aria-label='search articles'
           onClick={() => submitSearch(value)}
         >

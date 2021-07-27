@@ -6,12 +6,10 @@ import Header from '../Header/Header';
 import HeadlinesContainer from '../HeadlinesContainer/HeadlinesContainer';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Story from '../Story/Story';
-import Modal from '@material-ui/core/Modal';
 
 function App() {
   const [storyData, setStoryData] = useState([]);
   const [storyPaths, setStoryPaths] = useState([]);
-  const [storyRoutes, setStoryRoutes] = useState([]);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -27,22 +25,6 @@ function App() {
     setStoryPaths(paths);
   }, [storyData]);
 
-  const createStory = (storyData, storyPath) => {
-    return <Story story={storyData} path={storyPath} />;
-  };
-
-  useEffect(() => {
-    const routes = storyPaths.map((p, i) => (
-      <Route
-        exact
-        key={i}
-        path={`/${p}`}
-        render={() => createStory(storyData[i], p)}
-      ></Route>
-    ));
-    setStoryRoutes(routes);
-  }, [storyPaths]);
-
   return (
     <div className='App'>
       <Header stories={storyData} paths={storyPaths} />
@@ -54,8 +36,19 @@ function App() {
           render={() => (
             <HeadlinesContainer storyData={storyData} storyPaths={storyPaths} />
           )}
-        ></Route>
-        {storyRoutes}
+        />
+        <Route
+          exact
+          path='/:storyPath'
+          render={({ match }) => {
+            const { storyPath } = match.params;
+            const index = storyPaths.indexOf(storyPath);
+            if (index >= 0) {
+              const story = storyData[index];
+              return <Story story={story} path={storyPath} />;
+            }
+          }}
+        />
         <Redirect to='/frontpage' />
       </Switch>
     </div>
