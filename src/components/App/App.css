@@ -1,7 +1,9 @@
 .App {
-  
-}
-
-img {
-	max-width: 20rem
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	background: rgba(197, 192, 192, 0.027);
+	line-height: 1.3
 }
