@@ -25,8 +25,8 @@ function App() {
     setStoryPaths(paths);
   }, [storyData]);
 
-  const createStory = (storyData) => {
-    return <Story story={storyData} />;
+  const createStory = (storyData, storyPath) => {
+    return <Story story={storyData} path={storyPath} />;
   };
 
   useEffect(() => {
@@ -35,26 +35,15 @@ function App() {
         exact
         key={i}
         path={`/${p}`}
-        render={() => createStory(storyData[i])}
+        render={() => createStory(storyData[i], p)}
       ></Route>
     ));
     setStoryRoutes(routes);
   }, [storyPaths]);
 
-  // const mapStories = () => {
-  //   return storyData.map((s, i) => {
-  //     const story = <Story story={s} />;
-  //     return createRoute(storyPaths[i], story, i);
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   return storyData.map((s, i) => <Story key={i} storyData={s} />);
-  // }, [storyData]);
-
   return (
     <div className='App'>
-      <Header />
+      <Header stories={storyData} paths={storyPaths} />
       <Switch>
         <Route
           exact
