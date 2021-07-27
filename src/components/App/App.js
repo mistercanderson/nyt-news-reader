@@ -1,36 +1,72 @@
 import './App.css';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { getTopStories } from '../../apiCalls';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import Header from '../Header/Header';
+import HeadlinesContainer from '../HeadlinesContainer/HeadlinesContainer';
+import Story from '../Story/Story';
 
 function App() {
-  const [topStories, setTopStories] = useState([]);
-  const [images, setImages] = useState([]);
+  const [storyData, setStoryData] = useState([]);
+  const [storyPaths, setStoryPaths] = useState([]);
+  const [storyRoutes, setStoryRoutes] = useState([]);
   const [error, setError] = useState(false);
-
-  const mapImages = useRef();
 
   useEffect(() => {
     getTopStories()
-      .then((data) => setTopStories(data.results))
+      .then((data) => setStoryData(data.results))
       .catch(() => setError(true));
   }, []);
 
-  mapImages.current = () => {
-    return topStories.map((s, i) => (
-      <img key={i} src={s.multimedia[0].url} alt={s.title} />
-    ));
+  useEffect(() => {
+    const paths = storyData.map((s) => {
+      return s.url.split('/').pop().split('.').shift();
+    });
+    setStoryPaths(paths);
+  }, [storyData]);
+
+  const createStory = (storyData) => {
+    return <Story story={storyData} />;
   };
 
   useEffect(() => {
-    setImages(mapImages.current());
-  }, [topStories]);
+    const routes = storyPaths.map((p, i) => (
+      <Route
+        exact
+        key={i}
+        path={`/${p}`}
+        render={() => createStory(storyData[i])}
+      ></Route>
+    ));
+    setStoryRoutes(routes);
+  }, [storyPaths]);
+
+  // const mapStories = () => {
+  //   return storyData.map((s, i) => {
+  //     const story = <Story story={s} />;
+  //     return createRoute(storyPaths[i], story, i);
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   return storyData.map((s, i) => <Story key={i} storyData={s} />);
+  // }, [storyData]);
 
   return (
-    <Switch>
-      <Route exact path='/frontpage' render={() => <div>{images}</div>}></Route>
-      <Redirect to='/frontpage' />
-    </Switch>
+    <div className='App'>
+      <Header />
+      <Switch>
+        <Route
+          exact
+          path='/frontpage'
+          render={() => (
+            <HeadlinesContainer storyData={storyData} storyPaths={storyPaths} />
+          )}
+        ></Route>
+        {storyRoutes}
+        <Redirect to='/frontpage' />
+      </Switch>
+    </div>
   );
 }
 
