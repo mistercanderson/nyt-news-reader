@@ -4,7 +4,9 @@ import { getTopStories } from '../../apiCalls';
 import { useState, useEffect } from 'react';
 import Header from '../Header/Header';
 import HeadlinesContainer from '../HeadlinesContainer/HeadlinesContainer';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Story from '../Story/Story';
+import Modal from '@material-ui/core/Modal';
 
 function App() {
   const [storyData, setStoryData] = useState([]);
@@ -44,6 +46,7 @@ function App() {
   return (
     <div className='App'>
       <Header stories={storyData} paths={storyPaths} />
+      {error && <ErrorMessage />}
       <Switch>
         <Route
           exact
