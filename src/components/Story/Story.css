@@ -2,3 +2,9 @@
 	max-width: 50%;
 	position: relative;
 }
+
+@media screen and (max-width: 480px) {
+	.story-container {
+		max-width: 90%
+	}
+}

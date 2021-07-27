@@ -1,9 +1,74 @@
-import './SearchBar.css'
+import './SearchBar.css';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { useState } from 'react';
+import { Redirect } from 'react-router-dom';
+import IconButton from '@material-ui/core/IconButton';
+import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
+import { makeStyles } from '@material-ui/core/styles';
 
-export default function SearchBar() {
-	return (
-		<div>
-			<input type='search' />
-		</div>
-	)
+const useStyles = makeStyles({
+  searchBar: {
+    width: '20em',
+    '@media (max-width: 480px)': {
+      width: '11em',
+    },
+  },
+});
+
+export default function SearchBar({ stories, paths }) {
+  const defaultProps = {
+    options: stories,
+    getOptionLabel: (story) => story.title,
+  };
+
+  const [value, setValue] = useState(null);
+  const [path, setPath] = useState(null);
+
+  const submitSearch = () => {
+    const searchIndex = stories.indexOf(value);
+    if (paths[searchIndex]) {
+      setPath(paths[searchIndex]);
+    }
+  };
+
+  const classes = useStyles();
+
+  return (
+    <>
+      {path && <Redirect to={`/${path}`} />}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          submitSearch(value);
+        }}
+      >
+        <IconButton
+          color='primary'
+          aria-label='search articles'
+          onClick={() => submitSearch(value)}
+        >
+          <SearchOutlinedIcon />
+        </IconButton>
+        <Autocomplete
+          {...defaultProps}
+          className={classes.searchBar}
+          noOptionsText={'No matching articles found'}
+          value={value}
+          onChange={(e, newValue) => {
+            e.preventDefault();
+            setValue(newValue);
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              className={classes.searchBar}
+              label='Search articles'
+              variant='outlined'
+            />
+          )}
+        />
+      </form>
+    </>
+  );
 }

@@ -3,7 +3,7 @@ import StoryHeadline from './StoryHeadline/StoryHeadline';
 import StoryDetails from './StoryDetails/StoryDetails';
 import { useState, useEffect } from 'react';
 
-export default function Story({ story }) {
+export default function Story({ story, path }) {
   const [details, setDetails] = useState({});
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function Story({ story }) {
 
   return (
     <div className='story-container'>
-      <StoryHeadline title={story.title} byline={story.byline} />
+      <StoryHeadline title={story.title} byline={story.byline} path={path}/>
       <StoryDetails details={details} />
     </div>
   );
