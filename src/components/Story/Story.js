@@ -19,7 +19,12 @@ export default function Story({ story, path }) {
 
   return (
     <div className='story-container'>
-      <StoryHeadline title={story.title} byline={story.byline} path={path}/>
+      <StoryHeadline
+        title={story.title}
+        byline={story.byline}
+        path={path}
+        disableLink={true}
+      />
       <StoryDetails details={details} />
     </div>
   );

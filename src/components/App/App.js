@@ -32,12 +32,11 @@ function App() {
       <Switch>
         <Route
           exact
-          path='/frontpage'
+          path='/'
           render={() => (
             <HeadlinesContainer storyData={storyData} storyPaths={storyPaths} />
           )}
         />
-        <Redirect from='/' to='/frontpage' />
         <Route
           exact
           path='/:storyPath'
@@ -48,10 +47,11 @@ function App() {
               const story = storyData[index];
               return <Story story={story} path={storyPath} />;
             }
-            return <Redirect to='/frontpage' />;
+            return <Redirect to='/' />;
           }}
         />
       </Switch>
+      <Redirect to='/' />
     </div>
   );
 }
