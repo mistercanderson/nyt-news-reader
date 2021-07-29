@@ -2,7 +2,7 @@
 
 ## Overview
 
-Check out the deployed page [here](https://nyt-news-reader.surge.sh/frontpage)
+Check out the deployed page [here](https://nyt-news-reader.surge.sh)
 
 This app uses the NYT Top Stories API to give users a quick glance at current popular articles. When a headline is clicked, details from that story are displayed, along with a link to read the full story on the New York Times website.
 
